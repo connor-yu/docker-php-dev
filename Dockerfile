@@ -1,4 +1,4 @@
-FROM php:7.1-fpm
+FROM php:7.1-cli
 
 RUN apt-get update && apt-get install -y \
 	libfreetype6-dev \
@@ -22,13 +22,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) bcmath \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-install -j$(nproc) opcache \
-
-    && pecl install xdebug \
-    && docker-php-ext-enable xdebug \
-
-    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-
-RUN { \
+    && { \
 		echo 'opcache.memory_consumption=128'; \
 		echo 'opcache.interned_strings_buffer=8'; \
 		echo 'opcache.max_accelerated_files=4000'; \
@@ -36,5 +30,11 @@ RUN { \
 		echo 'opcache.fast_shutdown=1'; \
 		echo 'opcache.enable_cli=1'; \
 	} > /usr/local/etc/php/conf.d/opcache-recommended.ini
+
+RUN pecl install event && docker-php-ext-enable event
+
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /srv
