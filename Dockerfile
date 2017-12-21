@@ -23,6 +23,9 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install -j$(nproc) zip \
     && docker-php-ext-install -j$(nproc) opcache \
 
+    && pecl install event \
+    && docker-php-ext-enable event \
+
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
 
