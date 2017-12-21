@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     zlib1g-dev \
     libssl-dev \
+    libevent \
     git \
     --no-install-recommends \
     && apt-get clean \
