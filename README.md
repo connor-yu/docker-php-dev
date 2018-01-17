@@ -12,7 +12,7 @@
 #### 4、已经OK了，就这么简单。
 
 ### 重启服务
-#### 以下命令都需要在项目根目录下执行
+#### 以下命令都需要在项目根目录下执行，（start：启动；stop：停止；restart：重启）
 #### 全部重启：docker-compose restart
 #### 重启php-fpm: docker-compose restart php-fpm
 #### 重启mysql: docker-compose restart mariadb
