@@ -1,0 +1,36 @@
+version: "3"
+services:
+
+    mariadb:
+        image: mariadb
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - ./docker/config/mariadb:/etc/mysql/conf.d
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+
+    php-fpm:
+        image: joneconnor/php-dev:fpm
+        volumes:
+            - ./:/srv
+            - ./docker/config/php:/usr/local/etc/php
+        depends_on:
+            - mariadb
+        links:
+            - mariadb:mysql
+
+    nginx:
+        image: nginx
+        volumes:
+            - ./:/srv
+            - ./docker/config/nginx:/etc/nginx/conf.d
+        depends_on:
+            - php-fpm
+        links:
+            - php-fpm:php-fpm
+        ports:
+            - "80:80"
+volumes:
+    mysql-data: {}
